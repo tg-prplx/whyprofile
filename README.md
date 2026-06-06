@@ -1,4 +1,4 @@
-# Banner Framework
+# WhyProfile
 
 Tiny SVG scene framework for GitHub profile banners. Write a banner in HTML-ish markup and CSS theme blocks; the CLI renders paired dark/light SVGs and a ready-to-paste README `<picture>` snippet.
 
@@ -187,3 +187,7 @@ node src/cli.js examples/profile-scene.html --out assets --snippet dist/picture-
 ## Preview
 
 Open `dist/preview.html` after running `npm run build`.
+
+## License
+
+MIT. See `LICENSE`.
