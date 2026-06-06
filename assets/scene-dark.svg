@@ -3,7 +3,7 @@
   <metadata>Generated with prplx Banner Framework</metadata>
   <!-- generated-with: prplx-banner-framework -->
   <title id="title">prplx profile scene</title>
-  <desc id="desc">creator of TNF · maintainer of Vellium · AI tooling</desc>
+  <desc id="desc">creator of whyprofile · maintainer of Vellium · AI tooling</desc>
   <defs>
     <clipPath id="sceneClip">
       <rect x="0" y="0" width="1200" height="630" rx="12"/>
@@ -13331,18 +13331,18 @@ Vellium
 </g>
 <g style="--delay: 2.85s" transform="translate(605 364)" class="pill anim-fade">
 <rect x="0" y="0" width="196" height="40" rx="8" fill="#111111" fill-opacity="0.92"/>
-<rect x="78" y="0" width="118" height="40" rx="8" fill="#46E3FF"/>
-<rect x="78" y="0" width="7" height="40" fill="#46E3FF"/>
-<text x="39" y="27" text-anchor="middle" class="pill-label">
-TNF
+<rect x="138" y="0" width="58" height="40" rx="8" fill="#46E3FF"/>
+<rect x="138" y="0" width="7" height="40" fill="#46E3FF"/>
+<text x="69" y="27" text-anchor="middle" class="pill-label">
+whyprofile
 </text>
-<text x="137" y="27" text-anchor="middle" fill="#FFFFFF" class="pill-value">
-Framework
+<text x="167" y="27" text-anchor="middle" fill="#FFFFFF" class="pill-value">
+2★
 </text>
 </g>
 </g>
 <text class="tagline anim-fade" style="--delay: 2.9s" x="600" y="438" text-anchor="middle">
-creator of TNF · maintainer of Vellium · AI tooling
+creator of whyprofile · maintainer of Vellium · AI tooling
 </text>
 <g class="anim-fade" style="--delay: 3.05s">
 <g transform="translate(367 460)" class="chip">

@@ -12,10 +12,10 @@ export default createProfileScene({
     name: 'prplx',
     projects: [
       { label: 'Vellium', value: '87★', accent: '#8B5CF6' },
-      { label: 'TNF', value: 'Framework', accent: '#46E3FF' }
+      { label: 'whyprofile', value: '2★', accent: '#46E3FF' }
     ],
     skills: ['Python', 'JavaScript', 'Linux', 'LLM API'],
-    tagline: 'creator of TNF · maintainer of Vellium · AI tooling',
+    tagline: 'creator of whyprofile · maintainer of Vellium · AI tooling',
     typingLines: [
       'building desktop llm clients',
       'maintaining 70k lines of questionable code',

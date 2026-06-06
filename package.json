@@ -9,7 +9,8 @@
   "scripts": {
     "build": "node src/cli.js examples/profile-scene.html --out assets --snippet dist/picture-snippet.html",
     "build:js": "node src/cli.js examples/profile-scene.config.mjs --out assets --snippet dist/picture-snippet.html",
-    "check": "node --check src/index.js && node --check src/presets.js && node --check src/html.js && node --check src/cli.js && node --check examples/profile-scene.config.mjs"
+    "check": "node --check src/index.js && node --check src/presets.js && node --check src/html.js && node --check src/cli.js && node --check src/sync-stars.js && node --check examples/profile-scene.config.mjs",
+    "sync:stars": "node src/sync-stars.js examples/profile-scene.html"
   },
   "engines": {
     "node": ">=18"

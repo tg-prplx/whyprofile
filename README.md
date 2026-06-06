@@ -16,6 +16,13 @@ Outputs:
 
 `npm run build` reads `examples/profile-scene.html`.
 
+To refresh GitHub star counts before rendering:
+
+```bash
+npm run sync:stars
+npm run build
+```
+
 ## README Snippet
 
 ```html
@@ -51,7 +58,7 @@ Change `examples/profile-scene.html`.
   <bf-text x="600" y="142" class="title" anchor="middle">prplx</bf-text>
   <bf-terminal x="264" y="188" width="672" radius="12" effect="shadow" lines="building tools|shipping weird SVGs"></bf-terminal>
   <bf-row center-x="600" y="364" gap="16">
-    <bf-pill label="Vellium" value="87★" accent="#8B5CF6" radius="8" animate="fade" delay="2.75"></bf-pill>
+    <bf-pill label="Vellium" value="87★" repo="tg-prplx/vellium" accent="#8B5CF6" radius="8" animate="fade" delay="2.75"></bf-pill>
     <bf-chip label="Python" radius="6"></bf-chip>
   </bf-row>
 </bf-scene>
@@ -87,6 +94,8 @@ Most tags accept the same presentation controls:
 - Animation: `animate="fade"`, `animate="pulse"`, `animate="drift"`, plus `delay`, `duration`, `origin`
 - Transforms: `translate="x y"`, `rotate`, `scale`
 - Native escape hatches: `class`, `style`, `filter`, `transform`
+
+For GitHub-backed badges, add `repo="owner/name"` to a `<bf-pill>` or `<bf-chip>` and run `npm run sync:stars`. The script updates that element's `value` to the current `N★` count.
 
 Examples:
 

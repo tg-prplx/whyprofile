@@ -1,0 +1,59 @@
+name: Sync demo stars
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 3 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/sync-demo-stars.yml'
+      - 'assets/demo-background.svg'
+      - 'examples/profile-scene.html'
+      - 'package.json'
+      - 'src/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-demo-stars
+  cancel-in-progress: true
+
+jobs:
+  sync-demo-stars:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check scripts
+        run: npm run check
+
+      - name: Sync GitHub stars
+        run: npm run sync:stars
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Generate demo SVGs
+        run: npm run build
+
+      - name: Commit synced demo
+        run: |
+          if git diff --quiet -- examples/profile-scene.html assets/scene-dark.svg assets/scene-light.svg dist/picture-snippet.html; then
+            echo "No demo star changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add examples/profile-scene.html assets/scene-dark.svg assets/scene-light.svg dist/picture-snippet.html
+          git commit -m "chore(demo): sync GitHub stars"
+          git push
