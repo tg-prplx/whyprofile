@@ -1,0 +1,17 @@
+{
+  "name": "banner-framework",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "banner-framework": "./src/cli.js"
+  },
+  "scripts": {
+    "build": "node src/cli.js examples/profile-scene.html --out assets --snippet dist/picture-snippet.html",
+    "build:js": "node src/cli.js examples/profile-scene.config.mjs --out assets --snippet dist/picture-snippet.html",
+    "check": "node --check src/index.js && node --check src/presets.js && node --check src/html.js && node --check src/cli.js && node --check examples/profile-scene.config.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
