@@ -57,6 +57,14 @@ function normalizeChildren(children) {
   return children.flat(Infinity).filter(Boolean);
 }
 
+function formatSeconds(value) {
+  return `${Number(value.toFixed(2))}s`;
+}
+
+function formatNumber(value) {
+  return String(Number(value.toFixed(2)));
+}
+
 function translatedGroupAttrs(groupAttrs, x, y) {
   const existing = groupAttrs.transform ? `${groupAttrs.transform} ` : '';
   return {
@@ -92,6 +100,9 @@ export const motion = {
   },
   blink(name = 'blink') {
     return keyframes(name, '  0%, 45% { opacity: 1; }\n  46%, 100% { opacity: 0; }');
+  },
+  cursorStep(name = 'cursorStep') {
+    return keyframes(name, '  from, to { opacity: 1; }');
   },
   pulse(name = 'softPulse') {
     return keyframes(name, '  0%, 100% { opacity: 0.78; }\n  50% { opacity: 1; }');
@@ -256,23 +267,61 @@ export function terminal(options = {}) {
   const visibleLines = lines.slice(0, maxLines);
   const height = Math.max(80, startY + visibleLines.length * lineHeight + 12);
   const t = scopedTheme(theme);
+  const typeStartDelay = 0.55;
+  const typeLineStagger = 1;
+  const typeDuration = 0.95;
+  const charWidth = 13.2;
+  const doneDelay = visibleLines.length > 0
+    ? typeStartDelay + (visibleLines.length - 1) * typeLineStagger + typeDuration
+    : typeStartDelay;
 
   const lineNodes = visibleLines.map((line, index) => {
     const prefix = index === 0 ? '$' : '>';
     const content = `${prefix} ${line}`;
-    const delay = `${0.5 + index * 0.65}s`;
-
-    return text(content, {
-      x: width / 2,
-      y: startY + index * lineHeight,
-      'text-anchor': 'middle',
-      class: index === 0 ? 'typing-line active-line typed' : 'typing-line typed',
-      style: `--type-delay: ${delay}; --chars: ${content.length};`
+    const delaySeconds = typeStartDelay + index * typeLineStagger;
+    const delay = formatSeconds(delaySeconds);
+    const cursorDistance = Math.min(width - 40, content.length * charWidth);
+    const cursorStart = width / 2 - cursorDistance / 2;
+    const stepDuration = typeDuration / content.length;
+    const isLastLine = index === visibleLines.length - 1;
+    const cursorStepDuration = stepDuration * 0.9;
+    const cursorY = startY + index * lineHeight - 21;
+    const stepCount = isLastLine ? content.length : content.length + 1;
+    const cursorSteps = Array.from({ length: stepCount }, (_, stepIndex) => {
+      return rect({
+        x: formatNumber(cursorStart + stepIndex * charWidth),
+        y: cursorY,
+        width: 3.5,
+        height: 24,
+        rx: 1.75,
+        class: 'cursor-step',
+        style: `--cursor-step-delay: ${formatSeconds(delaySeconds + stepIndex * stepDuration)}; --cursor-step-duration: ${formatSeconds(cursorStepDuration)};`
+      });
     });
-  });
+    const finalCursor = isLastLine
+      ? rect({
+        x: formatNumber(cursorStart + cursorDistance),
+        y: cursorY,
+        width: 3.5,
+        height: 24,
+        rx: 1.75,
+        class: 'cursor-blink',
+        style: `--blink-delay: ${formatSeconds(doneDelay)};`
+      })
+      : null;
 
-  const lastLine = visibleLines.at(-1) ?? '';
-  const cursorX = width / 2 + Math.min(width / 2 - 20, (`> ${lastLine}`).length * 7);
+    return [
+      text(content, {
+        x: width / 2,
+        y: startY + index * lineHeight,
+        'text-anchor': 'middle',
+        class: index === 0 ? 'typing-line active-line typed' : 'typing-line typed',
+        style: `--type-delay: ${delay}; --type-duration: ${formatSeconds(typeDuration)}; --chars: ${content.length};`
+      }),
+      ...cursorSteps,
+      finalCursor
+    ];
+  });
 
   return panel({
     x,
@@ -287,8 +336,7 @@ export function terminal(options = {}) {
     className,
     groupAttrs
   }, [
-    ...lineNodes,
-    text('_', { x: cursorX, y: startY + Math.max(0, visibleLines.length - 1) * lineHeight, class: 'cursor' })
+    ...lineNodes
   ]);
 }
 
@@ -345,6 +393,7 @@ export function createSvg(scene, variant, body) {
     motion.drift(),
     motion.typeIn(),
     motion.blink(),
+    motion.cursorStep(),
     motion.pulse(),
     defaultStyles(theme),
     scene.styles?.({ theme, variant }) ?? ''
@@ -420,14 +469,18 @@ function defaultStyles(theme) {
       animation: 'fadeIn var(--duration, 0.8s) ease-out var(--delay, 0s) both'
     }),
     css.classRule('.typed', {
-      animation: 'typeIn 1.2s steps(var(--chars), end) both',
+      animation: 'typeIn var(--type-duration, 1.2s) steps(var(--chars), end) both',
       'animation-delay': 'var(--type-delay, 0s)'
     }),
-    css.classRule('.cursor', {
-      font: `600 22px ${css.font(false)}`,
+    css.classRule('.cursor-step', {
       fill: theme.accent2,
-      animation: 'blink 0.85s steps(1, end) infinite',
-      'animation-delay': '3.4s'
+      opacity: 0,
+      animation: 'cursorStep var(--cursor-step-duration, 0.16s) linear var(--cursor-step-delay, 0s) 1'
+    }),
+    css.classRule('.cursor-blink', {
+      fill: theme.accent2,
+      opacity: 0,
+      animation: 'blink 0.85s steps(1, end) var(--blink-delay, 4s) infinite'
     }),
     css.classRule('.title', {
       font: `800 74px ${css.font(true)}`,

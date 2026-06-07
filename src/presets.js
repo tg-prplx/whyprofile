@@ -141,7 +141,7 @@ ${options.styles?.({ theme, variant }) ?? ''}
           x: layout.terminalX,
           y: layout.terminalY
         }),
-        centerRow(profile.projects, {
+        group(centerRow(profile.projects, {
           centerX: layout.centerX,
           gap: 16,
           measure: (_, index) => projectWidths[index],
@@ -156,8 +156,8 @@ ${options.styles?.({ theme, variant }) ?? ''}
             y
           }),
           y: layout.projectsY
-        }),
-        text(profile.tagline, { x: layout.centerX, y: layout.taglineY, class: 'tagline fade-in', 'text-anchor': 'middle', style: 'animation-delay: 2.9s;' }),
+        }), { class: 'fade-in', style: 'animation-delay: 4.75s;' }),
+        text(profile.tagline, { x: layout.centerX, y: layout.taglineY, class: 'tagline fade-in', 'text-anchor': 'middle', style: 'animation-delay: 4.9s;' }),
         group(centerRow(profile.skills, {
           centerX: layout.centerX,
           gap: 12,
@@ -172,7 +172,7 @@ ${options.styles?.({ theme, variant }) ?? ''}
             y
           }),
           y: layout.skillsY
-        }), { class: 'fade-in', style: 'animation-delay: 3.05s;' }),
+        }), { class: 'fade-in', style: 'animation-delay: 5.05s;' }),
         group(centerRow(profile.contacts, {
           centerX: layout.centerX,
           gap: 16,
@@ -183,7 +183,7 @@ ${options.styles?.({ theme, variant }) ?? ''}
             text(label, { x: widthValue / 2 + 12, y: 27, 'text-anchor': 'middle', class: 'pill-label' })
           ], { transform: `translate(${x} ${y})` }),
           y: layout.contactsY
-        }), { class: 'fade-in', style: 'animation-delay: 3.2s;' })
+        }), { class: 'fade-in', style: 'animation-delay: 5.2s;' })
       );
 
       return children;
